@@ -102,4 +102,4 @@ async def query_rag(query: str = Form(...)):
     print(response)
 
 
-    return {"response": response["choices"][0]["message"]["text"]}
+    return {"response": response["choices"][0]["message"]["content"]}

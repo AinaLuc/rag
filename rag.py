@@ -99,5 +99,7 @@ async def query_rag(query: str = Form(...)):
             {"role": "user", "content": prompt}  # Use the prompt you constructed
         ]
     )
+    print(response)
+
 
     return {"response": response["choices"][0]["message"]["text"]}

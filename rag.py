@@ -1,6 +1,6 @@
 import os
 import rag
-import openai
+from openai import OpenAI  # Import the OpenAI client
 import numpy as np
 from fastapi import FastAPI, File, UploadFile, Form
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -14,7 +14,7 @@ app = FastAPI()
 load_dotenv()
 
 # OpenAI API Key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # FAISS Index & Metadata Storage
 embedding_model = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
@@ -92,9 +92,12 @@ async def query_rag(query: str = Form(...)):
     prompt = f"Using the following retrieved information: {retrieved_docs}, answer the query: {query}"
 
     # Call OpenAI GPT-4
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "system", "content": prompt}]
+    response = client.chat.completions.create(
+        model="gpt-4",  # Specify the model
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}  # Use the prompt you constructed
+        ]
     )
 
     return {"response": response["choices"][0]["message"]["content"]}

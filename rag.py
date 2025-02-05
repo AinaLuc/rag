@@ -8,6 +8,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from PyPDF2 import PdfReader
 from typing import List
 from dotenv import load_dotenv
+import faiss  # Correct FAISS import
 
 app = FastAPI()
 load_dotenv()
@@ -18,7 +19,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # FAISS Index & Metadata Storage
 embedding_model = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
 embedding_dim = 1536  # Dimension of OpenAI embeddings
-faiss_index = rag.IndexFlatL2(embedding_dim)
+faiss_index = faiss.IndexFlatL2(embedding_dim)
 doc_map = {}
 
 # Uploads Directory

@@ -7,11 +7,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from PyPDF2 import PdfReader
 from typing import List
+from dotenv import load_dotenv
 
 app = FastAPI()
+load_dotenv()
 
 # OpenAI API Key
-openai.api_key = "your-openai-api-key"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # FAISS Index & Metadata Storage
 embedding_model = OpenAIEmbeddings()
